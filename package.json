@@ -1,8 +1,16 @@
 {
   "name": "blog-tutorial-1ab7",
   "private": true,
-  "description": "",
-  "license": "",
+  "description": "Blog tutorial from Remix docs",
+  "license": "MIT",
+  "author": {
+    "name": "Philip Johnston <tundera>",
+    "email": "tunderadev@gmail.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tundera/remix-blog.git"
+  },
   "sideEffects": false,
   "scripts": {
     "build": "run-s build:*",
