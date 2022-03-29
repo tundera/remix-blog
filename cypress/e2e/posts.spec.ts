@@ -12,4 +12,6 @@ describe("smoke tests", () => {
     cy.findByText("Everlong (Foo Fighters)");
     cy.findByText("Ms. Jackson (Outkast)");
   });
+
+  it("should allow you to create a post", () => {});
 });

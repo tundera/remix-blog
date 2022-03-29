@@ -8,10 +8,28 @@ import {
   json,
   useActionData,
 } from "remix";
-
-import { getUserId, createUserSession } from "~/session.server";
+import {
+  Box,
+  Flex,
+  Button,
+  Container,
+  FormControl,
+  FormHelperText,
+  FormErrorMessage,
+  FormLabel,
+  Heading,
+  HStack,
+  Input,
+  Stack,
+  Text,
+  useBreakpointValue,
+  VisuallyHiddenInput,
+} from "@chakra-ui/react";
 
 import { createUser, getUserByEmail } from "~/models/user.server";
+import { Logo } from "~/components/Logo";
+import { GitHubIcon } from "~/components/ProviderIcons";
+import { createUserSession, getUserId } from "~/session.server";
 import { validateEmail } from "~/utils";
 
 export const loader: LoaderFunction = async ({ request }) => {
@@ -94,86 +112,126 @@ export default function Join() {
   }, [actionData]);
 
   return (
-    <div className="flex min-h-full flex-col justify-center">
-      <div className="mx-auto w-full max-w-md px-8">
-        <Form method="post" className="space-y-6">
-          <div>
-            <label
-              htmlFor="email"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Email address
-            </label>
-            <div className="mt-1">
-              <input
-                ref={emailRef}
-                id="email"
-                required
-                autoFocus={true}
-                name="email"
-                type="email"
-                autoComplete="email"
-                aria-invalid={actionData?.errors?.email ? true : undefined}
-                aria-describedby="email-error"
-                className="w-full rounded border border-gray-500 px-2 py-1 text-lg"
-              />
-              {actionData?.errors?.email && (
-                <div className="pt-1 text-red-700" id="email-error">
-                  {actionData.errors.email}
-                </div>
-              )}
-            </div>
-          </div>
+    <Flex
+      direction="column"
+      minHeight="100vh"
+      width="full"
+      justify="center"
+      bgGradient={{ sm: "linear(to-r, blue.600, purple.600)" }}
+      py={{ base: "12", md: "24" }}
+    >
+      <Box>
+        <Container
+          maxW="md"
+          py={{ base: "0", sm: "8" }}
+          px={{ base: "4", sm: "10" }}
+          bg={useBreakpointValue({ base: "transparent", sm: "bg-surface" })}
+          boxShadow={{ base: "none", sm: "xl" }}
+          borderRadius={{ base: "none", sm: "xl" }}
+        >
+          <Stack spacing="8">
+            <Stack spacing="6" align="center">
+              <Logo />
+              <Stack spacing="3" textAlign="center">
+                <Heading size={useBreakpointValue({ base: "xs", md: "sm" })}>
+                  Create an account
+                </Heading>
+                <Text color="muted">Start making your dreams come true</Text>
+              </Stack>
+            </Stack>
 
-          <div>
-            <label
-              htmlFor="password"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Password
-            </label>
-            <div className="mt-1">
-              <input
-                id="password"
-                ref={passwordRef}
-                name="password"
-                type="password"
-                autoComplete="new-password"
-                aria-invalid={actionData?.errors?.password ? true : undefined}
-                aria-describedby="password-error"
-                className="w-full rounded border border-gray-500 px-2 py-1 text-lg"
-              />
-              {actionData?.errors?.password && (
-                <div className="pt-1 text-red-700" id="password-error">
-                  {actionData.errors.password}
-                </div>
-              )}
-            </div>
-          </div>
+            <Stack spacing="6">
+              <Form method="post">
+                <Stack spacing="5">
+                  <FormControl isRequired>
+                    <FormLabel htmlFor="email">Email</FormLabel>
+                    <Input
+                      id="email"
+                      ref={emailRef}
+                      autoFocus={true}
+                      name="email"
+                      type="email"
+                      autoComplete="email"
+                      aria-invalid={
+                        actionData?.errors?.email ? true : undefined
+                      }
+                      aria-describedby="email-error"
+                    />
+                    {actionData?.errors?.email ? (
+                      <FormErrorMessage id="email-error" pt="1" color="red.700">
+                        {actionData.errors.email}
+                      </FormErrorMessage>
+                    ) : (
+                      <FormHelperText>Email address required</FormHelperText>
+                    )}
+                  </FormControl>
+                  <FormControl isRequired>
+                    <FormLabel htmlFor="password">Password</FormLabel>
+                    <Input
+                      id="password"
+                      ref={passwordRef}
+                      name="password"
+                      type="password"
+                      autoComplete="current-password"
+                      aria-invalid={
+                        actionData?.errors?.password ? true : undefined
+                      }
+                      aria-describedby="password-error"
+                    />
+                    {actionData?.errors?.password ? (
+                      <FormErrorMessage
+                        id="password-error"
+                        pt="1"
+                        color="red.700"
+                      >
+                        {actionData.errors.password}
+                      </FormErrorMessage>
+                    ) : (
+                      <FormHelperText color="muted">
+                        At least 8 characters long
+                      </FormHelperText>
+                    )}
+                  </FormControl>
+                </Stack>
+                <Stack spacing="4">
+                  <VisuallyHiddenInput
+                    name="redirectTo"
+                    defaultValue={redirectTo}
+                  />
+                  <Button type="submit" variant="solid">
+                    Create account
+                  </Button>
+                  <Button
+                    variant="secondary"
+                    leftIcon={<GitHubIcon boxSize="5" />}
+                    iconSpacing="3"
+                  >
+                    Sign up with GitHub
+                  </Button>
+                </Stack>
+              </Form>
+            </Stack>
 
-          <input type="hidden" name="redirectTo" value={redirectTo} />
-          <button
-            type="submit"
-            className="w-full rounded bg-blue-500  py-2 px-4 text-white hover:bg-blue-600 focus:bg-blue-400"
-          >
-            Create Account
-          </button>
-          <div className="flex items-center justify-center">
-            <div className="text-center text-sm text-gray-500">
-              Already have an account?{" "}
-              <Link
-                className="text-blue-500 underline"
+            <HStack justify="center" spacing="1">
+              <Text fontSize="sm" color="muted">
+                Already have an account?
+              </Text>
+              <Button
+                as={Link}
                 to={{
                   pathname: "/login",
                   search: searchParams.toString(),
                 }}
+                variant="link"
+                colorScheme="blue"
+                size="sm"
               >
                 Log in
-              </Link>
-            </div>
-          </div>
-        </Form>
-      </div>
-    </div>
+              </Button>
+            </HStack>
+          </Stack>
+        </Container>
+      </Box>
+    </Flex>
   );
 }
