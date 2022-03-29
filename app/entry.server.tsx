@@ -4,8 +4,8 @@ import createEmotionServer from "@emotion/server/create-instance";
 import { RemixServer } from "remix";
 import type { EntryContext } from "remix";
 
-import { ServerStyleContext } from "~/context";
-import createEmotionCache from "~/createEmotionCache";
+import { ServerStyleContext } from "~/styles/context";
+import { createEmotionCache } from "~/styles/cache";
 
 export default function handleRequest(
   request: Request,

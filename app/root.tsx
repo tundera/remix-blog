@@ -13,7 +13,7 @@ import type { MetaFunction, LoaderFunction } from "remix";
 import { withEmotionCache } from "@emotion/react";
 import { VStack, Heading, ChakraProvider, Text } from "@chakra-ui/react";
 
-import { ServerStyleContext, ClientStyleContext } from "~/context";
+import { ServerStyleContext, ClientStyleContext } from "~/styles/context";
 import { theme } from "~/styles/theme";
 import { getUser } from "~/session.server";
 
